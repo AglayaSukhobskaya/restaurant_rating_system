@@ -1,4 +1,4 @@
-package com.sukhobskaya.topjava.restaurant_rating_system.web.user;
+package com.sukhobskaya.topjava.restaurant_rating_system.controller.user;
 
 import jakarta.annotation.security.PermitAll;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AbstractNamedEntity extends AbstractBaseEntity {
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     @NotBlank(message = "Name should not be empty!")
     private String name;
 
