@@ -1,22 +1,19 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.util;
 
-import com.sukhobskaya.topjava.restaurant_rating_system.service.RegistrationService;
+import com.sukhobskaya.topjava.restaurant_rating_system.repository.UserRepository;
 import com.sukhobskaya.topjava.restaurant_rating_system.to.UserTo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.NotValidDataException;
+import lombok.AllArgsConstructor;
+import org.modelmapper.internal.util.Assert;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
+@AllArgsConstructor
 public class UserValidator implements Validator {
 
-    private final RegistrationService registrationService;
-
-    @Autowired
-    public UserValidator(RegistrationService registrationService) {
-        this.registrationService = registrationService;
-    }
-
+    private final UserRepository userRepository;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -25,9 +22,16 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
+        Assert.notNull("target", "User should not be null!");
         UserTo userTo = (UserTo) target;
-        if (registrationService.getByEmail(userTo.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(userTo.getEmail()).isPresent()) {
             errors.rejectValue("email", "", "User with this email already exists!");
+        }
+    }
+
+    public void isExist(int id) {
+        if (userRepository.findById(id).isEmpty()) {
+            throw new NotValidDataException("User with id=" + id + " not found!");
         }
     }
 

@@ -7,19 +7,18 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 
-public class UserDetailsImpl implements UserDetails {
+public class PersonDetails implements UserDetails {
     private final User user;
 
     @Autowired
-    public UserDetailsImpl(User user) {
+    public PersonDetails(User user) {
         this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getAuthority()));
+        return user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).toList();
     }
 
     @Override
@@ -54,5 +53,12 @@ public class UserDetailsImpl implements UserDetails {
 
     public User getUser() {
         return user;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonDetails{" +
+                "user=" + user +
+                '}';
     }
 }

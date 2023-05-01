@@ -7,8 +7,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "users",
@@ -16,7 +21,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User extends AbstractNamedEntity {
+public class User extends AbstractNamedEntity implements Serializable {
 
     @Column(name = "email", nullable = false, unique = true)
     @NotBlank(message = "Email should not be empty!")
@@ -27,6 +32,7 @@ public class User extends AbstractNamedEntity {
     @NotBlank(message = "Password should not be empty!")
     private String password;
 
+    // выяснить, нахрена это нужно
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
@@ -34,8 +40,15 @@ public class User extends AbstractNamedEntity {
     @NotNull
     private LocalDateTime registered;
 
-    @Column(name = "role", nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
+
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "user_roles_idx")})
+    @Column(name = "role")
+    @ElementCollection(fetch = FetchType.EAGER)
+    @BatchSize(size = 20)
+    @JoinColumn
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<Role> roles;
 
 }
