@@ -17,3 +17,6 @@ Build a voting system for deciding where to have lunch.
     * If it is after 11:00 then it is too late, vote can't be changed
 
 Each restaurant provides a new menu each day.
+
+## Technology Stack
+Spring Boot 2.5.1 / Spring Security / Spring Data JPA / Hibernate / Maven / H2 / Postman
