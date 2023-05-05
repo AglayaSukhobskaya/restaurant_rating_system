@@ -2,12 +2,11 @@ package com.sukhobskaya.topjava.restaurant_rating_system.web.admin;
 
 import com.sukhobskaya.topjava.restaurant_rating_system.model.Restaurant;
 import com.sukhobskaya.topjava.restaurant_rating_system.service.RestaurantService;
-import com.sukhobskaya.topjava.restaurant_rating_system.to.FoodTo;
+import com.sukhobskaya.topjava.restaurant_rating_system.to.DishTo;
 import com.sukhobskaya.topjava.restaurant_rating_system.to.RestaurantTo;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.RestaurantValidator;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.ValidationUtil;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.Handler;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -15,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -69,9 +69,9 @@ public class AdminRestaurantRestController implements Handler {
     }
 
     @GetMapping("/{id}/day_menu")
-    public List<FoodTo> getDayMenu(@PathVariable("id") int id) {
+    public List<DishTo> getDayMenu(@PathVariable("id") int id) {
         return restaurantService.getDayMenu(id).stream()
-                .map(food -> modelMapper.map(food, FoodTo.class)).toList();
+                .map(food -> modelMapper.map(food, DishTo.class)).toList();
     }
 
 }

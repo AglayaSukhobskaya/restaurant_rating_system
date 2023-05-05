@@ -1,10 +1,10 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.model;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity

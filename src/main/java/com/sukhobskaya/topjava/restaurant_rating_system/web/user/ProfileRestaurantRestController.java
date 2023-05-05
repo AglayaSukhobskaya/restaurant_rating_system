@@ -1,6 +1,6 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.web.user;
 
-import com.sukhobskaya.topjava.restaurant_rating_system.model.Food;
+import com.sukhobskaya.topjava.restaurant_rating_system.model.Dish;
 import com.sukhobskaya.topjava.restaurant_rating_system.model.Restaurant;
 import com.sukhobskaya.topjava.restaurant_rating_system.service.RestaurantService;
 import com.sukhobskaya.topjava.restaurant_rating_system.to.RestaurantTo;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/restaurants")
+@RequestMapping("/api/profile/restaurants")
 @AllArgsConstructor
 public class ProfileRestaurantRestController implements Handler {
 
@@ -30,7 +30,7 @@ public class ProfileRestaurantRestController implements Handler {
     @GetMapping("/{id}")
     public RestaurantTo getWithDayMenu(@PathVariable("id") int id) {
         Restaurant restaurant = restaurantService.get(id);
-        List<Food> dayMenu = restaurant.getMenu().stream().filter(food -> food.getDate().equals(LocalDate.now())).toList();
+        List<Dish> dayMenu = restaurant.getMenu().stream().filter(food -> food.getDate().equals(LocalDate.now())).toList();
         restaurant.setMenu(dayMenu);
         return modelMapper.map(restaurant, RestaurantTo.class);
     }

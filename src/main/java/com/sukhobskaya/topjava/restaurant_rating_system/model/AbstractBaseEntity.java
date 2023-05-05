@@ -1,7 +1,8 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.model;
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @MappedSuperclass
 @Getter

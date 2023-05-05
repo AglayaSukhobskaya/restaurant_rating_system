@@ -1,13 +1,13 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -23,16 +23,9 @@ public class Restaurant extends AbstractBaseEntity {
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Food> menu;
+    private List<Dish> menu;
 
-    public Restaurant(Integer id, String name) {
-        super(id);
-        this.name = name;
-    }
-
-    public Restaurant(Integer id, String name, List<Food> menu) {
-        super(id);
-        this.name = name;
-        this.menu = menu;
-    }
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Vote> votes;
 }

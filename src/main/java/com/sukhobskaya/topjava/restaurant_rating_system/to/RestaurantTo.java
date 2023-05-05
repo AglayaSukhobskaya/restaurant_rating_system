@@ -1,10 +1,10 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.to;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Getter
@@ -15,6 +15,6 @@ public class RestaurantTo {
     @NotBlank(message = "Name should not be empty!")
     private String name;
 
-    private List<FoodTo> menu;
+    private List<DishTo> menu;
 
 }

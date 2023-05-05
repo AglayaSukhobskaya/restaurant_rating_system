@@ -1,6 +1,6 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.service;
 
-import com.sukhobskaya.topjava.restaurant_rating_system.model.Food;
+import com.sukhobskaya.topjava.restaurant_rating_system.model.Dish;
 import com.sukhobskaya.topjava.restaurant_rating_system.model.Restaurant;
 import com.sukhobskaya.topjava.restaurant_rating_system.repository.RestaurantRepository;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.NotFoundException;
@@ -33,6 +33,7 @@ public class RestaurantService {
     @Transactional
     public void create(Restaurant restaurant) {
         restaurant.setMenu(new ArrayList<>());
+        restaurant.setVotes(new ArrayList<>());
         restaurantRepository.save(restaurant);
     }
 
@@ -47,7 +48,7 @@ public class RestaurantService {
         restaurantRepository.deleteById(id);
     }
 
-    public List<Food> getDayMenu(int id) {
+    public List<Dish> getDayMenu(int id) {
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         return restaurant.map(value -> value.getMenu().stream()
                 .filter(food -> food.getDate().equals(LocalDate.now())).toList()).orElseGet(ArrayList::new);
