@@ -18,5 +18,88 @@ Build a voting system for deciding where to have lunch.
 
 Each restaurant provides a new menu each day.
 
+## Application functionality
+### New User Registration  
+<code>POST http: //localhost:8080/auth/registration</code>  
+
+### ADMIN Functionality
+#### Manipulations with users
+Get all users:  
+<code>GET http: //localhost:8080/api/admin/users</code>
+
+Get user by id:  
+<code>GET http: //localhost:8080/api/admin/users/1</code>
+
+Delete user by id:  
+<code>DELETE http: //localhost:8080/api/admin/users/1</code>
+
+#### Manipulations with restaurants
+Get all restaurants with full menu:  
+<code>GET http: //localhost:8080/api/admin/restaurants</code>
+
+Get restaurant by id with full menu:  
+<code>GET http: //localhost:8080/api/admin/restaurants/1</code>
+
+Create new restaurant:  
+<code>POST http: //localhost:8080/api/admin/restaurants</code>
+
+Update restaurant by id:  
+<code>PUT http: //localhost:8080/api/admin/restaurants/1</code>
+
+Delete restaurant by id:  
+<code>DELETE http: //localhost:8080/api/admin/restaurants/1</code>
+
+#### Manipulations with dishes
+Get all dishes:  
+<code>GET http: //localhost:8080/api/admin/dishes</code>
+
+Get dish by id:  
+<code>GET http: //localhost:8080/api/admin/dishes/1</code>
+
+Create new dish:  
+<code>POST http: //localhost:8080/api/admin/dishes</code>
+
+Update dish by id:  
+<code>PUT http: //localhost:8080/api/admin/dishes/1</code>
+
+Delete dish by id:  
+<code>DELETE http: //localhost:8080/api/admin/dishes/1</code>
+
+#### Manipulations with votes
+
+### PROFILE Functionality
+#### Manipulations with user's data
+Get profile:  
+<code>GET http: //localhost:8080/api/profile</code>
+
+Update profile:  
+<code>PUT http: //localhost:8080/api/profile</code>
+
+Delete profile:  
+<code>DELETE http: //localhost:8080/api/profile</code>
+
+#### Manipulations with restaurants
+Get all restaurants with day menu:  
+<code>GET http: //localhost:8080/api/profile/restaurants</code>
+
+Get restaurant by id with day menu:  
+<code>GET http: //localhost:8080/api/profile/restaurants/1</code>
+
+#### Manipulations with votes
+Get all user's votes:  
+<code>GET http: //localhost:8080/api/profile/votes</code>
+
+Get user's vote by id:  
+<code>GET http: //localhost:8080/api/profile/votes/1</code>
+
+Create new vote:  
+<code>POST http: //localhost:8080/api/profile/votes</code>
+
+Update user's vote by id:  
+<code>PUT http: //localhost:8080/api/profile/votes/1</code>
+
+Delete user's vote by id:  
+<code>DELETE http: //localhost:8080/api/profile/votes/1</code>
+
 ## Technology Stack
 Spring Boot 2.5.1 / Spring Security / Spring Data JPA / Hibernate / Maven / H2 / Postman
