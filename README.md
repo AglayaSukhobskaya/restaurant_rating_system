@@ -65,8 +65,6 @@ Update dish by id:
 Delete dish by id:  
 <code>DELETE http: //localhost:8080/api/admin/dishes/1</code>
 
-#### Manipulations with votes
-
 ### PROFILE Functionality
 #### Manipulations with user's data
 Get profile:  
