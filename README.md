@@ -1,5 +1,6 @@
 # Restaurant Raiting System
-**Technical requirement**
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/c4a14fe0dba94d7a876f361460f8d58b)](https://app.codacy.com/gh/AglayaSukhobskaya/restaurant_rating_system/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)  
+## Technical requirement
 
 Design and implement a REST API using Hibernate/Spring/SpringMVC (Spring-Boot preferred!) without frontend.
 
