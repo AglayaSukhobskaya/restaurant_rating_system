@@ -1,11 +1,13 @@
-package com.sukhobskaya.topjava.restaurant_rating_system.web.user;
+package com.sukhobskaya.topjava.restaurant_rating_system.controller.user;
 
 import com.sukhobskaya.topjava.restaurant_rating_system.model.Dish;
 import com.sukhobskaya.topjava.restaurant_rating_system.model.Restaurant;
 import com.sukhobskaya.topjava.restaurant_rating_system.service.RestaurantService;
 import com.sukhobskaya.topjava.restaurant_rating_system.dto.RestaurantDto;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.Handler;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +17,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/profile/restaurants")
 @AllArgsConstructor
-public class ProfileRestaurantController implements Handler {
-
-    private final RestaurantService restaurantService;
-    private final ModelMapper modelMapper;
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class UserRestaurantController implements Handler {
+    RestaurantService restaurantService;
+    ModelMapper modelMapper;
 
     @GetMapping
     private List<RestaurantDto> getAll() {

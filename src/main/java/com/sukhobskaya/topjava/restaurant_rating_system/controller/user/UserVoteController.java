@@ -1,12 +1,14 @@
-package com.sukhobskaya.topjava.restaurant_rating_system.web.user;
+package com.sukhobskaya.topjava.restaurant_rating_system.controller.user;
 
 import com.sukhobskaya.topjava.restaurant_rating_system.model.Vote;
 import com.sukhobskaya.topjava.restaurant_rating_system.security.PersonDetails;
 import com.sukhobskaya.topjava.restaurant_rating_system.service.VoteService;
 import com.sukhobskaya.topjava.restaurant_rating_system.dto.VoteDto;
-import com.sukhobskaya.topjava.restaurant_rating_system.util.RestaurantValidator;
-import com.sukhobskaya.topjava.restaurant_rating_system.util.VoteValidator;
+import com.sukhobskaya.topjava.restaurant_rating_system.util.validator.RestaurantValidator;
+import com.sukhobskaya.topjava.restaurant_rating_system.util.validator.VoteValidator;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +21,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/profile/votes")
 @AllArgsConstructor
-public class ProfileVoteController {
-
-    private final VoteService voteService;
-    private final RestaurantValidator restaurantValidator;
-    private final ModelMapper modelMapper;
-    private final VoteValidator voteValidator;
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class UserVoteController {
+    VoteService voteService;
+    RestaurantValidator restaurantValidator;
+    ModelMapper modelMapper;
+    VoteValidator voteValidator;
 
     @GetMapping
     public List<VoteDto> getAll(@AuthenticationPrincipal PersonDetails personDetails) {

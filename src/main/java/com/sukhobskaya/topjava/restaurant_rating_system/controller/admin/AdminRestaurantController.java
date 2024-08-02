@@ -1,13 +1,15 @@
-package com.sukhobskaya.topjava.restaurant_rating_system.web.admin;
+package com.sukhobskaya.topjava.restaurant_rating_system.controller.admin;
 
 import com.sukhobskaya.topjava.restaurant_rating_system.model.Restaurant;
 import com.sukhobskaya.topjava.restaurant_rating_system.service.RestaurantService;
 import com.sukhobskaya.topjava.restaurant_rating_system.dto.DishDto;
 import com.sukhobskaya.topjava.restaurant_rating_system.dto.RestaurantDto;
-import com.sukhobskaya.topjava.restaurant_rating_system.util.RestaurantValidator;
+import com.sukhobskaya.topjava.restaurant_rating_system.util.validator.RestaurantValidator;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.ValidationUtil;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.Handler;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +22,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/restaurants")
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminRestaurantController implements Handler {
-
-    private final RestaurantService restaurantService;
-    private final ModelMapper modelMapper;
-    private final RestaurantValidator restaurantValidator;
+    RestaurantService restaurantService;
+    ModelMapper modelMapper;
+    RestaurantValidator restaurantValidator;
 
     @GetMapping
     private List<RestaurantDto> getAll() {
@@ -73,5 +75,4 @@ public class AdminRestaurantController implements Handler {
         return restaurantService.getDayMenu(id).stream()
                 .map(food -> modelMapper.map(food, DishDto.class)).toList();
     }
-
 }

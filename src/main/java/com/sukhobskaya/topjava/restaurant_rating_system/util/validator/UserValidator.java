@@ -1,9 +1,11 @@
-package com.sukhobskaya.topjava.restaurant_rating_system.util;
+package com.sukhobskaya.topjava.restaurant_rating_system.util.validator;
 
 import com.sukhobskaya.topjava.restaurant_rating_system.repository.UserRepository;
 import com.sukhobskaya.topjava.restaurant_rating_system.dto.UserDto;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.NotValidDataException;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.modelmapper.internal.util.Assert;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -11,9 +13,9 @@ import org.springframework.validation.Validator;
 
 @Component
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserValidator implements Validator {
-
-    private final UserRepository userRepository;
+    UserRepository userRepository;
 
     @Override
     public boolean supports(Class<?> clazz) {

@@ -1,8 +1,8 @@
-package com.sukhobskaya.topjava.restaurant_rating_system.web.admin;
+package com.sukhobskaya.topjava.restaurant_rating_system.controller.admin;
 
 import com.sukhobskaya.topjava.restaurant_rating_system.dto.UserDto;
 import com.sukhobskaya.topjava.restaurant_rating_system.service.UserService;
-import com.sukhobskaya.topjava.restaurant_rating_system.util.UserValidator;
+import com.sukhobskaya.topjava.restaurant_rating_system.util.validator.UserValidator;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.ValidationUtil;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.Handler;
 import lombok.AccessLevel;

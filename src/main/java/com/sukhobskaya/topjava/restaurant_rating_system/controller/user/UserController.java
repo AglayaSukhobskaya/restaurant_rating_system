@@ -1,12 +1,14 @@
-package com.sukhobskaya.topjava.restaurant_rating_system.web.user;
+package com.sukhobskaya.topjava.restaurant_rating_system.controller.user;
 
 import com.sukhobskaya.topjava.restaurant_rating_system.dto.UserDto;
 import com.sukhobskaya.topjava.restaurant_rating_system.security.PersonDetails;
 import com.sukhobskaya.topjava.restaurant_rating_system.service.UserService;
-import com.sukhobskaya.topjava.restaurant_rating_system.util.UserValidator;
+import com.sukhobskaya.topjava.restaurant_rating_system.util.validator.UserValidator;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.ValidationUtil;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.Handler;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +21,11 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/profile")
 @AllArgsConstructor
-public class ProfileController implements Handler {
-
-    private final UserService userService;
-    private final ModelMapper modelMapper;
-    private final UserValidator userValidator;
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class UserController implements Handler {
+    UserService userService;
+    ModelMapper modelMapper;
+    UserValidator userValidator;
 
     @GetMapping
     public UserDto get(@AuthenticationPrincipal PersonDetails personDetails) {
