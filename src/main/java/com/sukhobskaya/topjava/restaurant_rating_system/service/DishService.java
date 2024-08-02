@@ -47,8 +47,8 @@ public class DishService {
         var dishToUpdate = modelMapper.map(get(id), Dish.class);
         var restaurant = restaurantService.getByName(restaurantName);
         dishToUpdate.setRestaurant(restaurant);
-        dishToUpdate.setName(dishDto.getName());
-        dishToUpdate.setPrice(dishDto.getPrice());
+        dishToUpdate.setName(dishDto.name());
+        dishToUpdate.setPrice(dishDto.price());
         restaurant.getMenu().add(dishToUpdate);
         dishRepository.saveAndFlush(dishToUpdate);
     }

@@ -37,7 +37,7 @@ public class AuthController implements Handler {
 
         registrationService.register(modelMapper.map(userDto, User.class));
 
-        String token = jwtUtil.generateToken(userDto.getEmail());
+        String token = jwtUtil.generateToken(userDto.email());
         return Map.of("jwt-token", token);
     }
 }

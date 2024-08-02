@@ -39,9 +39,9 @@ public class UserService {
 
     public void update(Integer id, @NotNull UserDto updatedUser) {
         var user =  modelMapper.map(get(id), User.class);
-        user.setName(updatedUser.getName());
-        user.setEmail(updatedUser.getEmail());
-        user.setPassword(updatedUser.getPassword());
+        user.setName(updatedUser.name());
+        user.setEmail(updatedUser.email());
+        user.setPassword(updatedUser.password());
         userRepository.saveAndFlush(user);
     }
 

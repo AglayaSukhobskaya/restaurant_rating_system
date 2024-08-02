@@ -23,7 +23,7 @@ public class DishValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Assert.notNull("target", "Dish should not be null!");
         DishDto foodTo = (DishDto) target;
-        if (dishRepository.findByName(foodTo.getName()).isPresent()) {
+        if (dishRepository.findByName(foodTo.name()).isPresent()) {
             errors.rejectValue("name", "", "Dish with this name already exists!");
         }
     }

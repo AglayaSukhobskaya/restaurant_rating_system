@@ -24,7 +24,7 @@ public class RestaurantValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Assert.notNull("target", "Restaurant should not be null!");
         RestaurantDto restaurantDto = (RestaurantDto) target;
-        if (restaurantRepository.findByName(restaurantDto.getName()).isPresent()) {
+        if (restaurantRepository.findByName(restaurantDto.name()).isPresent()) {
             errors.rejectValue("name", "", "Restaurant with this name already exists!");
         }
     }

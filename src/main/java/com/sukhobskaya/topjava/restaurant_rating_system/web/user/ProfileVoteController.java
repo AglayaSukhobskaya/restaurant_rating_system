@@ -44,7 +44,7 @@ public class ProfileVoteController {
     public ResponseEntity<HttpStatus> create(@AuthenticationPrincipal PersonDetails personDetails,
                                              @RequestBody @Valid VoteDto voteDto) {
 
-        restaurantValidator.isExist(voteDto.getRestaurantName());
+        restaurantValidator.isExist(voteDto.restaurantName());
         Vote vote = modelMapper.map(voteDto, Vote.class);
         vote.setUser(personDetails.getUser());
 

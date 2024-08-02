@@ -24,7 +24,7 @@ public class UserValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Assert.notNull("target", "User should not be null!");
         UserDto userDto = (UserDto) target;
-        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(userDto.email()).isPresent()) {
             errors.rejectValue("email", "", "User with this email already exists!");
         }
     }
