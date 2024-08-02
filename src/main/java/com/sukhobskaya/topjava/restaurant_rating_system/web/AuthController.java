@@ -3,7 +3,7 @@ package com.sukhobskaya.topjava.restaurant_rating_system.web;
 import com.sukhobskaya.topjava.restaurant_rating_system.model.User;
 import com.sukhobskaya.topjava.restaurant_rating_system.security.JWTUtil;
 import com.sukhobskaya.topjava.restaurant_rating_system.service.RegistrationService;
-import com.sukhobskaya.topjava.restaurant_rating_system.to.UserTo;
+import com.sukhobskaya.topjava.restaurant_rating_system.dto.UserDto;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.UserValidator;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.ValidationUtil;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.Handler;
@@ -29,15 +29,15 @@ public class AuthController implements Handler {
     private final JWTUtil jwtUtil;
 
     @PostMapping("/registration")
-    public Map<String, String> register(@RequestBody @Valid UserTo userTo,
+    public Map<String, String> register(@RequestBody @Valid UserDto userDto,
                         BindingResult bindingResult) {
 
-        userValidator.validate(userTo, bindingResult);
+        userValidator.validate(userDto, bindingResult);
         ValidationUtil.checkDataValidity(bindingResult);
 
-        registrationService.register(modelMapper.map(userTo, User.class));
+        registrationService.register(modelMapper.map(userDto, User.class));
 
-        String token = jwtUtil.generateToken(userTo.getEmail());
+        String token = jwtUtil.generateToken(userDto.getEmail());
         return Map.of("jwt-token", token);
     }
 }

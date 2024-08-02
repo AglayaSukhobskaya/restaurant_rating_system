@@ -1,4 +1,4 @@
-package com.sukhobskaya.topjava.restaurant_rating_system.to;
+package com.sukhobskaya.topjava.restaurant_rating_system.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +10,11 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RestaurantTo {
+public class RestaurantDto {
 
     @NotBlank(message = "Name should not be empty!")
     private String name;
 
-    private List<DishTo> menu;
+    private List<DishDto> menu;
 
 }

@@ -1,33 +1,36 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "dish")
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
+@Table(name = "dish")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Dish extends AbstractBaseEntity {
 
-    @Column(name = "name", nullable = false, unique = true)
     @NotBlank(message = "Name should not be empty!")
-    private String name;
+    @Column(name = "name", nullable = false, unique = true)
+    String name;
 
     @Column(name = "price", nullable = false)
-    private Integer price;
+    Integer price;
 
-    @Column(name = "date", nullable = false)
     @NotNull
-    private LocalDate date;
+    @Column(name = "date", nullable = false)
+    LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
-    private Restaurant restaurant;
+    Restaurant restaurant;
 }

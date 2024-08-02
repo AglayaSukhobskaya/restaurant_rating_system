@@ -1,4 +1,4 @@
-package com.sukhobskaya.topjava.restaurant_rating_system.to;
+package com.sukhobskaya.topjava.restaurant_rating_system.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,14 +10,14 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-public class VoteTo {
+public class VoteDto {
 
     private LocalDate voteDate;
 
     @NotBlank(message = "Name should not be empty!")
     private String restaurantName;
 
-    public VoteTo(String restaurantName) {
+    public VoteDto(String restaurantName) {
         this.restaurantName = restaurantName;
     }
 }

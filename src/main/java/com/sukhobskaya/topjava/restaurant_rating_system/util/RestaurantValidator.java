@@ -1,7 +1,7 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.util;
 
 import com.sukhobskaya.topjava.restaurant_rating_system.repository.RestaurantRepository;
-import com.sukhobskaya.topjava.restaurant_rating_system.to.RestaurantTo;
+import com.sukhobskaya.topjava.restaurant_rating_system.dto.RestaurantDto;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.internal.util.Assert;
@@ -17,14 +17,14 @@ public class RestaurantValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return RestaurantTo.class.equals(clazz);
+        return RestaurantDto.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
         Assert.notNull("target", "Restaurant should not be null!");
-        RestaurantTo restaurantTo = (RestaurantTo) target;
-        if (restaurantRepository.findByName(restaurantTo.getName()).isPresent()) {
+        RestaurantDto restaurantDto = (RestaurantDto) target;
+        if (restaurantRepository.findByName(restaurantDto.getName()).isPresent()) {
             errors.rejectValue("name", "", "Restaurant with this name already exists!");
         }
     }

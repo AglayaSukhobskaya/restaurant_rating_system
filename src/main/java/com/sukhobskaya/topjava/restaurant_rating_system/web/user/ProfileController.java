@@ -1,9 +1,8 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.web.user;
 
-import com.sukhobskaya.topjava.restaurant_rating_system.model.User;
+import com.sukhobskaya.topjava.restaurant_rating_system.dto.UserDto;
 import com.sukhobskaya.topjava.restaurant_rating_system.security.PersonDetails;
 import com.sukhobskaya.topjava.restaurant_rating_system.service.UserService;
-import com.sukhobskaya.topjava.restaurant_rating_system.to.UserTo;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.UserValidator;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.ValidationUtil;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.Handler;
@@ -20,27 +19,27 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/profile")
 @AllArgsConstructor
-public class ProfileRestController implements Handler {
+public class ProfileController implements Handler {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final UserValidator userValidator;
 
     @GetMapping
-    public UserTo get(@AuthenticationPrincipal PersonDetails personDetails) {
-        return modelMapper.map(personDetails.getUser(), UserTo.class);
+    public UserDto get(@AuthenticationPrincipal PersonDetails personDetails) {
+        return modelMapper.map(personDetails.getUser(), UserDto.class);
     }
 
     // пока не работает
     @PutMapping
     public ResponseEntity<HttpStatus> update(@AuthenticationPrincipal PersonDetails personDetails,
-                                             @RequestBody @Valid UserTo userTo,
+                                             @RequestBody @Valid UserDto userDto,
                                              BindingResult bindingResult) {
 
-        userValidator.validate(userTo, bindingResult);
+        userValidator.validate(userDto, bindingResult);
         ValidationUtil.checkDataValidity(bindingResult);
 
-        userService.update(personDetails.getUser().getId(), modelMapper.map(userTo, User.class));
+        userService.update(personDetails.getUser().getId(), userDto);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

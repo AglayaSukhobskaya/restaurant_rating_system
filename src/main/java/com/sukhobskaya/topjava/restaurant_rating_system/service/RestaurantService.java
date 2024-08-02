@@ -5,53 +5,54 @@ import com.sukhobskaya.topjava.restaurant_rating_system.model.Restaurant;
 import com.sukhobskaya.topjava.restaurant_rating_system.repository.RestaurantRepository;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 @Service
-@Transactional(readOnly = true)
 @AllArgsConstructor
-public class RestaurantService {
 
-    private final RestaurantRepository restaurantRepository;
+public class RestaurantService {
+    RestaurantRepository restaurantRepository;
 
     public List<Restaurant> getAll() {
         return restaurantRepository.findAll();
     }
 
-    public Restaurant get(int id) {
-        Optional<Restaurant> foundRestaurant = restaurantRepository.findById(id);
-        return foundRestaurant.orElseThrow(() -> new NotFoundException("Restaurant with id="
-                + id + " not found!"));
+    public Restaurant get(Integer id) {
+        return restaurantRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Restaurant with id=" + id + " not found!"));
     }
 
-    @Transactional
-    public void create(Restaurant restaurant) {
+    public Restaurant getByName(String name) {
+        return restaurantRepository.findByName(name)
+                .orElseThrow(() -> new NotFoundException("Restaurant with name=\"" + name + "\" not found!"));
+    }
+
+    public void create(@NotNull Restaurant restaurant) {
         restaurant.setMenu(new ArrayList<>());
         restaurant.setVotes(new ArrayList<>());
-        restaurantRepository.save(restaurant);
+        restaurantRepository.saveAndFlush(restaurant);
     }
 
-    @Transactional
-    public void update(int id, Restaurant restaurant) {
+    public void update(Integer id, @NotNull Restaurant restaurant) {
         restaurant.setId(id);
-        restaurantRepository.save(restaurant);
+        restaurantRepository.saveAndFlush(restaurant);
     }
 
-    @Transactional
-    public void delete(int id) {
+    public void delete(Integer id) {
         restaurantRepository.deleteById(id);
     }
 
-    public List<Dish> getDayMenu(int id) {
-        Optional<Restaurant> restaurant = restaurantRepository.findById(id);
-        return restaurant.map(value -> value.getMenu().stream()
-                .filter(food -> food.getDate().equals(LocalDate.now())).toList()).orElseGet(ArrayList::new);
+    public List<Dish> getDayMenu(Integer id) {
+        return restaurantRepository.findById(id)
+                .map(value -> value.getMenu().stream()
+                        .filter(dish -> Objects.equals(dish.getDate(), LocalDate.now()))
+                        .toList())
+                .orElseGet(ArrayList::new);
     }
-
 }

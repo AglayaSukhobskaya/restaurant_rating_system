@@ -1,14 +1,14 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.web.admin;
 
-import com.sukhobskaya.topjava.restaurant_rating_system.model.Dish;
+import com.sukhobskaya.topjava.restaurant_rating_system.dto.DishDto;
 import com.sukhobskaya.topjava.restaurant_rating_system.service.DishService;
-import com.sukhobskaya.topjava.restaurant_rating_system.to.DishTo;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.DishValidator;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.RestaurantValidator;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.ValidationUtil;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.Handler;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -20,50 +20,46 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/dishes")
 @AllArgsConstructor
-public class AdminDishRestController implements Handler {
-
-    private final DishService dishService;
-    private final ModelMapper modelMapper;
-    private final DishValidator foodValidator;
-    private final RestaurantValidator restaurantValidator;
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class AdminDishController implements Handler {
+    DishService dishService;
+    DishValidator foodValidator;
+    RestaurantValidator restaurantValidator;
 
     @GetMapping
-    private List<DishTo> getAll() {
-        return dishService.getAll().stream()
-                .map(food -> modelMapper.map(food, DishTo.class))
-                .toList();
+    private List<DishDto> getAll() {
+        return dishService.getAll();
     }
 
     @GetMapping("/{id}")
-    public DishTo get(@PathVariable("id") int id) {
-        return modelMapper.map(dishService.get(id), DishTo.class);
+    public DishDto get(@PathVariable("id") Integer id) {
+        return dishService.get(id);
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid DishTo foodTo,
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid DishDto dishDto,
                                              @RequestParam("restaurant_name") String restaurantName,
                                              BindingResult bindingResult) {
 
-        foodValidator.validate(foodTo, bindingResult);
+        foodValidator.validate(dishDto, bindingResult);
         restaurantValidator.isExist(restaurantName);
         ValidationUtil.checkDataValidity(bindingResult);
 
-        dishService.create(modelMapper.map(foodTo, Dish.class), restaurantName);
+        dishService.create(dishDto, restaurantName);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> update(@PathVariable("id") int id, @RequestBody @Valid DishTo foodTo,
+    public ResponseEntity<HttpStatus> update(@PathVariable("id") Integer id, @RequestBody @Valid DishDto dishDto,
                                              @RequestParam("restaurant_name") String restaurantName,
                                              BindingResult bindingResult) {
-
         foodValidator.isExist(id);
-        foodValidator.validate(foodTo, bindingResult);
+        foodValidator.validate(dishDto, bindingResult);
         restaurantValidator.isExist(restaurantName);
         // добавить проверку, принадлежит ли еда ресторану
         ValidationUtil.checkDataValidity(bindingResult);
 
-        dishService.update(id, modelMapper.map(foodTo, Dish.class), restaurantName);
+        dishService.update(id, dishDto, restaurantName);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -73,5 +69,4 @@ public class AdminDishRestController implements Handler {
         dishService.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-
 }

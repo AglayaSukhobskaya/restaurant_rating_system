@@ -1,41 +1,51 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.service;
 
+import com.sukhobskaya.topjava.restaurant_rating_system.dto.UserDto;
 import com.sukhobskaya.topjava.restaurant_rating_system.model.User;
 import com.sukhobskaya.topjava.restaurant_rating_system.repository.UserRepository;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.NotFoundException;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.jetbrains.annotations.NotNull;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserService {
+    UserRepository userRepository;
+    ModelMapper modelMapper;
 
-    private final UserRepository userRepository;
-
-    public List<User> getAll() {
-        return userRepository.findAll();
+    public List<UserDto> getAll() {
+        return userRepository.findAll().stream()
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .toList();
     }
 
-    public User get(int id) {
-        Optional<User> foundUser = userRepository.findById(id);
-        return foundUser.orElseThrow(() -> new NotFoundException("User with id="
-                + id + " not found!"));
+    public UserDto get(Integer id) {
+        return userRepository.findById(id)
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .orElseThrow(() -> new NotFoundException("User with id=" + id + " not found!"));
     }
 
-    @Transactional
-    public void update(int id, User updatedUser) {
-        updatedUser.setId(id);
-        userRepository.save(updatedUser);
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User with email=\"" + email + "\" not found!"));
     }
 
-    @Transactional
-    public void delete(int id) {
+    public void update(Integer id, @NotNull UserDto updatedUser) {
+        var user =  modelMapper.map(get(id), User.class);
+        user.setName(updatedUser.getName());
+        user.setEmail(updatedUser.getEmail());
+        user.setPassword(updatedUser.getPassword());
+        userRepository.saveAndFlush(user);
+    }
+
+    public void delete(Integer id) {
         userRepository.deleteById(id);
     }
-
 }

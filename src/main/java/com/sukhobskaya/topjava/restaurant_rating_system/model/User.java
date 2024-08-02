@@ -1,8 +1,10 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -21,24 +23,25 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User extends AbstractNamedEntity implements Serializable {
 
     @Column(name = "email", nullable = false, unique = true)
     @NotBlank(message = "Email should not be empty!")
     @Email(message = "Email should be valid!")
-    private String email;
+    String email;
 
     @Column(name = "password", nullable = false)
     @NotBlank(message = "Password should not be empty!")
-    private String password;
+    String password;
 
     // выяснить, нахрена это нужно
     @Column(name = "enabled", nullable = false)
-    private boolean enabled;
+    boolean enabled;
 
-    @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
     @NotNull
-    private LocalDateTime registered;
+    @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
+    LocalDateTime registered;
 
 
     @Enumerated(EnumType.STRING)
@@ -49,6 +52,5 @@ public class User extends AbstractNamedEntity implements Serializable {
     @BatchSize(size = 20)
     @JoinColumn
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<Role> roles;
-
+    Set<Role> roles;
 }

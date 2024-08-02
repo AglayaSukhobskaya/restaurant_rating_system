@@ -1,13 +1,13 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.web.admin;
 
-import com.sukhobskaya.topjava.restaurant_rating_system.model.User;
+import com.sukhobskaya.topjava.restaurant_rating_system.dto.UserDto;
 import com.sukhobskaya.topjava.restaurant_rating_system.service.UserService;
-import com.sukhobskaya.topjava.restaurant_rating_system.to.UserTo;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.UserValidator;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.ValidationUtil;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.Handler;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,38 +19,35 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/users")
 @AllArgsConstructor
-public class AdminRestController implements Handler {
-
-    private final UserService userService;
-    private final ModelMapper modelMapper;
-    private final UserValidator userValidator;
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class AdminController implements Handler {
+    UserService userService;
+    UserValidator userValidator;
 
     @GetMapping
-    public List<UserTo> getAll() {
-        return userService.getAll().stream()
-                .map(user -> modelMapper.map(user, UserTo.class))
-                .toList();
+    public List<UserDto> getAll() {
+        return userService.getAll();
     }
 
     @GetMapping("/{id}")
-    public UserTo get(@PathVariable("id") int id) {
-        return modelMapper.map(userService.get(id), UserTo.class);
+    public UserDto get(@PathVariable("id") Integer id) {
+        return userService.get(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> update(@PathVariable("id") int id,
-                                             @RequestBody @Valid UserTo userTo,
+    public ResponseEntity<HttpStatus> update(@PathVariable("id") Integer id,
+                                             @RequestBody @Valid UserDto userDto,
                                              BindingResult bindingResult) {
         userValidator.isExist(id);
-        userValidator.validate(userTo, bindingResult);
+        userValidator.validate(userDto, bindingResult);
         ValidationUtil.checkDataValidity(bindingResult);
 
-        userService.update(id, modelMapper.map(userTo, User.class));
+        userService.update(id, userDto);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id) {
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") Integer id) {
         userValidator.isExist(id);
         userService.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);

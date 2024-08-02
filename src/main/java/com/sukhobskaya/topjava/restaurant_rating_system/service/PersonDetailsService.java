@@ -1,30 +1,21 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.service;
 
-import com.sukhobskaya.topjava.restaurant_rating_system.model.User;
-import com.sukhobskaya.topjava.restaurant_rating_system.repository.UserRepository;
 import com.sukhobskaya.topjava.restaurant_rating_system.security.PersonDetails;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PersonDetailsService implements UserDetailsService {
-
-    private final UserRepository userRepository;
+    UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByEmail(username);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User not found!");
-        }
-        return new PersonDetails(user.get());
+    public UserDetails loadUserByUsername(String email) {
+        return new PersonDetails(userService.getByEmail(email));
     }
 }

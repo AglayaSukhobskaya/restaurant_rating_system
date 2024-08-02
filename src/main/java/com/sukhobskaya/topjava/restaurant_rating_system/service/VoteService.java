@@ -1,58 +1,50 @@
 package com.sukhobskaya.topjava.restaurant_rating_system.service;
 
-import com.sukhobskaya.topjava.restaurant_rating_system.model.Restaurant;
 import com.sukhobskaya.topjava.restaurant_rating_system.model.Vote;
-import com.sukhobskaya.topjava.restaurant_rating_system.repository.RestaurantRepository;
 import com.sukhobskaya.topjava.restaurant_rating_system.repository.VoteRepository;
 import com.sukhobskaya.topjava.restaurant_rating_system.util.exception.NotFoundException;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class VoteService {
-
-    private final VoteRepository voteRepository;
-    private final RestaurantRepository restaurantRepository;
+    VoteRepository voteRepository;
+    RestaurantService restaurantService;
 
     public List<Vote> getAll() {
         return voteRepository.findAll();
     }
 
-    public Vote get(int id) {
-        Optional<Vote> foundVote = voteRepository.findById(id);
-        return foundVote.orElseThrow(() -> new NotFoundException("Vote with id="
-                + id + " not found!"));
+    public Vote get(Integer id) {
+        return voteRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Vote with id=" + id + " not found!"));
     }
 
-    @Transactional
-    public void create(Vote vote) {
+    public void create(@NotNull Vote vote) {
+        var restaurant = restaurantService.getByName(vote.getRestaurant().getName());
+        vote.setRestaurant(restaurant);
         vote.setVoteDate(LocalDate.now());
-        Optional<Restaurant> restaurant = restaurantRepository.findByName(vote.getRestaurant().getName());
-        vote.setRestaurant(restaurant.get());
-        restaurant.get().getVotes().add(vote);
-
-        voteRepository.save(vote);
+        restaurant.getVotes().add(vote);
+        voteRepository.saveAndFlush(vote);
     }
 
-    @Transactional
-    public void update(int id, String restaurantName) {
-        Vote vote = voteRepository.findById(id).get();
-        Restaurant restaurant = restaurantRepository.findByName(restaurantName).get();
+    public void update(Integer id, String restaurantName) {
+        var vote = get(id);
+        var restaurant = restaurantService.getByName(restaurantName);
         vote.setRestaurant(restaurant);
         restaurant.getVotes().add(vote);
-
-        voteRepository.save(vote);
+        voteRepository.saveAndFlush(vote);
     }
 
-    @Transactional
-    public void delete(int id) {
+    public void delete(Integer id) {
         voteRepository.deleteById(id);
     }
 }
